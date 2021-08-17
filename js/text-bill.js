@@ -10,3 +10,39 @@
 // * add the appropriate value to the running total
 // * add nothing for invalid values that is not 'call' or 'sms'.
 // * display the latest total on the screen
+
+const billTypeTextElement = document.querySelector(".billTypeText");
+const callTotalOneElement = document.querySelector(".callTotalOne");
+const smsTotalOneElement = document.querySelector(".smsTotalOne");
+const totalOneElement = document.querySelector(".totalOne");
+const addToBillBtn  = document.querySelector(".addToBillBtn");
+
+var callsTotal = 0;
+var smsTotal = 0;
+
+function textBillTotal(){
+    var billTypeEntered = billTypeText.value.trim();
+
+    if (billTypeEntered === "bill"){
+        callsTotal += 2.75
+    }
+    else if (billTypeEntered === "sms"){
+        smsTotal += 0.75;
+    }
+    
+    //update the totals that is displayed on the screen.
+    callsTotalElement.innerHTML = callsTotal.toFixed(2);
+    smsTotalElem.innerHTML = smsTotal.toFixed(2);
+    var totalCost = callsTotal + smsTotal;
+    totalCostElement.innerHTML = totalCost.toFixed(2);
+
+    if (totalCost >= 50){
+        // adding the danger class will make the text red
+        totalCostElement.classList.add("danger");
+    }
+    else if (totalCost >= 30){
+        totalCostElement.classList.add("warning");
+    }
+}
+
+textTotalAddBtn.addEventListener('click', textBillTotal);
