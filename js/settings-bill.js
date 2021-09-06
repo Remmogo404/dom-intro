@@ -1,15 +1,23 @@
 // get a reference to the sms or call radio buttons
 
+const billItemTypeWithSettings = document.querySelector(".billItemWithSettings");
 // get refences to all the settings fields
 
+const callCostingSetting = document.querySelector(".callCostingSetting");
+const smsCostSetting = document.querySelector(".smsCostingSetting");
+const warningLevelSetting = document.querySelector(".warningLevelSetting");
+const criticalLevelSetting = document.querySelector(".criticalLevelSetting");
+const totalSetting = document.querySelector(".totalSetting");
 //get a reference to the add button
-
+const settingsAddBtn = document.querySelector(".settingsAddBtn");
 //get a reference to the 'Update settings' button
-
+const updateSettings = document.querySelector(".updateSettings");
 // create a variables that will keep track of all the settings
-
+var settings = callsTotal + smsTotal
 // create a variables that will keep track of all three totals.
-
+const callTotalElement = document.querySelector(".callTotalSettings");
+const smsTotalElement = document.querySelector(".smsTotalSettings");
+const totalElement = document.querySelector(".TotalSettings");
 //add an event listener for when the 'Update settings' button is pressed
 
 //add an event listener for when the add button is pressed
@@ -21,45 +29,54 @@
 // * display the latest total on the screen.
 // * check the value thresholds and display the total value in the right color.
 
-const smsCostSetting = document.querySelector(".smsCostingSetting");
+var callTotal = 0;
+var smsTotal = 0;
+var total = 0;
+var callTotalValue = 0;
+var smsTotalValue = 0;
+var warningLevelValue = 0;
+var criticalLevelValue = 0;
 
-const addingButton = document.querySelector(".addingButton");
+updateSettings.addEventListener('click', function(){
+     
+    callTotalValue = Number(callCostingSetting.value);
 
-const updateSettings = document.querySelector(".updateSettings");
-
-var billingTotal12 = 0;
-var billingTotal24 = 0;
-
-updateSettings.addEventListener('click', radioBillAddingBtn);
-
-updateSettings.addEventListener('click', addingButtonRad);
-
-function addingButtonRad(){
+    smsTotalValue = Number(smsCostingSetting.value);
     
-    var checkedRadioButton = document.querySelector("input[name='billItemTypeWithSettings']:checked");
-    if (checkedRadioButton){
-        var billItemTypeWithSettings = checkedRadioButton.nodeValue;
+    warningLevelValue = Number(warningLevelSetting.value);
 
-        const callInput = callCostingSetting.value;
-        const smsInput = smsCostingSetting.value;
+    criticalLevelValue = Number(criticalLevelSetting.value);
 
-        console.log(callInput)
-        console.log(smsInput)
+    totalElement.classList.remove("danger");
+    totalElement.classList.remove("warning");
 
-        if (billItemTypeWithSettings === callInput){
-            billingTotal12 += callInput;
-
-            var roundedBillCall12 = billingTotal12.toFixed(2);
-            callTotalSettings.innerHTML = roundedBillCall12;
-        }
-        else if (billItemTypeWithSettings === smsInput){
-            billingTotal24 += smsInput;
-
-            var roundedBillCall24 = billingTotal24.toFixed(2);
-            smsTotalSettings.innerHTML = roundedBillCall24
-        }
+    if (total >= criticalLevelValue){
+        totalElement.classList.add("danger");
+    }else if (total >= criticalLevelValue){
+        totalElement.classList.add("warning");
     }
-    
-    var roundedBillCall25 = (billingTotal12 + billingTotal24 ).toFixed(2);
-    smsTotalSettings.innerHTML = roundedBillCall25
-}
+    });
+
+    settingsAddBtn.addEventListener('click', function(){
+        
+        var billItemTypeWithSettings = document.querySelector(".billItemTypeWithSettings");
+
+        if (billItemTypeWithSettings.value === 'call'){
+            callsTotal += callTotalValue;
+        }else if(billItemTypeWithSettings.value === 'sms'){
+            smsTotal += smsTotalValue;
+        }
+
+        callTotalElement.innerHTML = callsTotal.toFixed(2);
+        smsTotalElement.innerHTML = smsTotal.toFixed(2);
+        total = callsTotal +smsTotal;
+        totalElement.innerHTML = total.toFixed(2);
+
+        if (total >= criticalLevelValue){
+            totalElement.classList.remove("warning");
+            totalElement.classList.remove("danger");
+        } else if (total >= warningLevelValue){
+            totalElement.classList.remove("danger");
+            totalElement.classList.remove("warning");
+        }
+    });
